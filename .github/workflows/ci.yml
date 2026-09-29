@@ -53,24 +53,25 @@ jobs:
           name: validador-dni-jar
           path: target/validador-dni.jar
 
-generar_manifiesto:
-  runs-on: ubuntu-latest
-  needs: empaquetar
-  steps:
-    - name: Descargar el código fuente
-      uses: actions/checkout@v7
+  generar_manifiesto:
+    runs-on: ubuntu-latest
+    needs: empaquetar
 
-    - name: Generar build-info
-      env:
-        DEPLOY_ID: ${{ secrets.DEPLOY_ID }}
-      run: |
-        echo "Proyecto: validador-dni-ci" > build-info.txt
-        echo "Commit: $GITHUB_SHA" >> build-info.txt
-        echo "Fecha UTC: $(date -u)" >> build-info.txt
-        echo "Deploy ID (hash): $(echo -n "$DEPLOY_ID" | sha256sum | cut -c1-12)" >> build-info.txt
+    steps:
+      - name: Descargar el código fuente
+        uses: actions/checkout@v7
 
-    - name: Guardar manifiesto
-      uses: actions/upload-artifact@v7
-      with:
-        name: build-info
-        path: build-info.txt
+      - name: Generar build-info
+        env:
+          DEPLOY_ID: ${{ secrets.DEPLOY_ID }}
+        run: |
+          echo "Proyecto: validador-dni-ci" > build-info.txt
+          echo "Commit: $GITHUB_SHA" >> build-info.txt
+          echo "Fecha UTC: $(date -u)" >> build-info.txt
+          echo "Deploy ID (hash): $(echo -n "$DEPLOY_ID" | sha256sum | cut -c1-12)" >> build-info.txt
+
+      - name: Guardar manifiesto
+        uses: actions/upload-artifact@v7
+        with:
+          name: build-info
+          path: build-info.txt
