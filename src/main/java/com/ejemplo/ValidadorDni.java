@@ -8,7 +8,7 @@ public class ValidadorDni {
         if (dni == null) {
             return false;
         }
-        String limpio = dni.trim();
+        String limpio = dni.trim().toUpperCase();
         if (!limpio.matches("\\d{8}[A-Z]")) {
             return false;
         }
